@@ -4,5 +4,5 @@ controllers:
     namespace: App\Controller
   type: attribute
 index:
-  path: /
+  path: \
   controller: App\Controller\JeuController::index
