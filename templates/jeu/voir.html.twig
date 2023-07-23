@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LocalJeu -
+	{{ jeu.nom}}
+{% endblock %}
+
+
+{% block body %}
+	<div class="container mt-5">
+		<h1 class="">Le jeu:
+			{{jeu.nom}}</h1>
+		<p>
+			<small>Genre:
+				{{jeu.genre.nom | lower }}
+				polularité:
+				{{jeu.genre.popularite}}</small>
+		</p>
+		<p>
+			{{jeu.description}}</p>
+
+
+	</div>
+</div>{% endblock %}

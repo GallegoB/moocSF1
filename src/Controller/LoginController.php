@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class LoginController extends AbstractController
     }
 
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, MailService $mailService): Response
     {
         $user = new User();
         $user->setRoles(['ROLES_USER']);
@@ -48,6 +49,8 @@ class LoginController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $mailService->sendMail("Vous êtes bien inscrit sur LocaJeu", "Bienvenu sur le site");
 
             $this->addFlash(
                 'success',

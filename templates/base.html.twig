@@ -3,10 +3,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>
-			{% block title %}Welcome!
-			{% endblock %}
+			{% block title %}{% endblock %}
 		</title>
-		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
@@ -18,47 +19,56 @@
 	<body>
 		<nav class="navbar navbar-expand-lg bg-light">
 			<div class="container-fluid">
-				<a class="navbar-brand" href="#">LocalJeu</a>
+				<a class="navbar-brand" href="#">LocaJeu</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="{{ path('app_jeu')}}">Accueil</a>
+							<a class="nav-link {{ (app.request.get('_route') == 'app_jeu') ? 'active' : '' }}" aria-current="page" href="{{ path('app_jeu') }}">Accueil</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link act{{ (app.request.get('_route') == 'app_jeu') ? 'active' : '' }}ive" aria-current="page" href="{{ path('app_jeu_liste') }}">Nos jeux</a>
 						</li>
 					</ul>
-
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 						{% if app.user %}
 
+							{% if is_granted('ROLE_ADMIN') %}
+								<li class="nav-item">
+									<a class="nav-link active" aria-current="page" href="{{ path('app_admin') }}">Admin</a>
+								</li>
+							{% endif %}
+
 							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="{{ path('app_profil')}}">Mon compte</a>
+								<a class="nav-link {{ (app.request.get('_route') == 'app_jeu') ? 'active' : '' }}" aria-current="page" href="{{ path('app_profil') }}">Mon compte</a>
 							</li>
 
 							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="{{ path('app_logout')}}">Déconnexion</a>
+								<a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Déconnexion</a>
 							</li>
+
 						{% else %}
 
 							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="{{ path('app_register')}}">Inscription</a>
+								<a class="nav-link {{ (app.request.get('_route') == 'app_jeu') ? 'active' : '' }}" aria-current="page" href="{{ path('app_register') }}">Inscription</a>
 							</li>
 
 							<li class="nav-item">
-								<a class="nav-link active" aria-current="page" href="{{ path('app_login')}}">Connexion</a>
+								<a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Connexion</a>
 							</li>
 
 						{% endif %}
+
+
 					</ul>
-
-
 				</div>
-
 			</div>
-
 		</nav>
+
+		{# Affichage de mes flash messages #}
 		{% for label, messages in app.flashes %}
 			{% for message in messages %}
 				<div class="alert alert-{{ label }}">
